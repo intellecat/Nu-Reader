@@ -1,0 +1,30 @@
+!!! 5
+html
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible",content="IE=edge")
+		title Nu-Reader Backend
+		link(href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css",rel="stylesheet")
+		link(href="/style.css",rel="stylesheet")
+		script(src="//cdn.jsdelivr.net/jquery/2.0.3/jquery-2.0.3.min.js")
+		script(src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js")
+	body
+		.top-bar Nu-Reader
+
+		ul.nav.navbar-shelf
+			li(class=(['/jobs','/actions'].indexOf(currentUrl)>-1?'':'active'))
+				a(href="/posts") 
+					span.glyphicon.glyphicon-list-alt
+					| Posts
+			li(class=(currentUrl=='/jobs'?'active':''))
+				a(href="/jobs")
+					span.glyphicon.glyphicon-calendar
+					| Jobs
+			li(class=(currentUrl=='/actions'?'active':''))
+				a(href="/actions")
+					span.glyphicon.glyphicon-tasks
+					| Actions
+
+						
+		#main
+			block content

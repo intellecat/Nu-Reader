@@ -1,0 +1,15 @@
+{ 
+  "name": "nu-reader",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies":{ 
+    "agenda":"*",
+    "feedparser":"*",
+    "request":"*",
+    "express": "3.x",
+    "mongoskin":"*",
+    "async":"*",
+    "jade":"*",
+    "cheerio":"*"
+  }
+}

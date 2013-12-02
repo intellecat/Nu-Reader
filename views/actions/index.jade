@@ -1,0 +1,49 @@
+extends ../layout
+
+block content
+	.admin-box
+		h4.pull-left Actions
+
+		a.btn.btn-primary.pull-right(href="#",data-toggle="modal",data-target="#add-job") add action
+
+		table.table
+			thead
+				tr
+					th #
+					th name
+					th items
+			tbody
+				each action,i in actions
+					tr
+						td= i+1
+						td= action.name
+						td= action.items.join(' -> ')
+
+		#add-job.modal.fade(role="dialog")
+			.modal-dialog
+				form#form-add-action.modal-content.form-horizontal(action="/action/add",method="POST",role="form")
+					.modal-header
+						button.close(data-dismiss="modal") &times;
+						h4.modal-title Add an action
+					.modal-body
+						.form-group
+							label.control-label.col-sm-2(for="input-title") Name
+							.col-sm-8
+								input#input-title.form-control(type="text",name="name")
+						.form-group
+							label.control-label.col-sm-2(for="input-items") Items
+							.col-sm-8
+								input#input-items.form-control(type="text",name="items")
+
+					.modal-footer
+						button.btn.btn-primary(type="submit") Add
+
+	script.
+		$(function(){
+			$('#form-add-action').submit(function(event){
+				event.preventDefault();
+				$.post($(this).attr('action'),$(this).serialize(),function(){
+					location.reload();
+				});
+			});
+		});
