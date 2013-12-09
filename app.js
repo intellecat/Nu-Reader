@@ -30,10 +30,6 @@ util.initData(db);
 var jobManager = new JobManager(agenda);
 jobManager.restartJobs();
 
-app.get('/', function(req, res){
-  res.render('index', { users: 'users are all here' });
-});
-
 app.get('/jobs',function(req,res){
 	db.collection('jobs').find().toArray(function(err,jobs){
 		if(err) throw err;
@@ -43,7 +39,7 @@ app.get('/jobs',function(req,res){
 	});
 });
 
-app.get('/posts',function(req,res){
+app.get('/',function(req,res){
 	var page = req.query.page||1;
 	async.series([
 		function(callback){
