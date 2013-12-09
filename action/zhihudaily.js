@@ -1,7 +1,7 @@
 var request = require('request'),
-	mongo = require('mongoskin');
+	util = require('../lib/util');
 
-var db = mongo.db('localhost:27017/nu-reader?auto_reconnect',{safe: true});
+var db = util.mongo.db();
 
 function getNews(param,callback) {
 	var url = 'http://news.at.zhihu.com/api/1.2/news/latest';

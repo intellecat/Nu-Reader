@@ -1,8 +1,8 @@
 var request = require('request'),
-	mongo = require('mongoskin'),
-	FeedParser = require('feedparser');
+	FeedParser = require('feedparser'),
+	util = require('../lib/util');
 
-var db = mongo.db('localhost:27017/nu-reader?auto_reconnect',{safe: true});
+var db = util.mongo.db();
 
 var posts_collection = db.collection('posts');
 

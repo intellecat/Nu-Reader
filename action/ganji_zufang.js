@@ -1,8 +1,8 @@
 var request = require('request'),
-	mongo = require('mongoskin'),
+	util = require('../lib/util'),
 	cheerio = require('cheerio');
 
-var db = mongo.db('localhost:27017/nu-reader?auto_reconnect',{safe: true});
+var db = util.mongo.db();
 
 function fetch(param,callback) {
 	request(param.url,function (error, response, body) {

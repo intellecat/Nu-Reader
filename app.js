@@ -7,6 +7,7 @@ var fs = require('fs'),
 	util = require('./lib/util');
 
 process.setMaxListeners(0);
+	config = require('./config/main.json');
 
 var app = express();
 app.use(express.bodyParser());
@@ -21,9 +22,10 @@ app.use(function(req, res, next){
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
-var agenda = new Agenda({db: { address: 'localhost:27017/nu-reader',collection:'jobs'},processEvery:'5 seconds'});
+var agenda = new Agenda({db: { address: config.mongo,collection:'jobs'},processEvery:'5 seconds'});
 
-var db = mongo.db('localhost:27017/nu-reader?auto_reconnect',{safe: true});
+var db = util.mongo.db();
+
 
 var jobManager = new JobManager(agenda);
 jobManager.restartJobs();
