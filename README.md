@@ -11,6 +11,8 @@ Nu-Reader是一个可扩展的可定制的订阅/采集程序
 
 ##启动
 ```
+cd {project_dir}
+npm install
 node app.js
 ```
 使用浏览器打开 http://127.0.0.1:3000
@@ -44,9 +46,9 @@ exports.shanghai = function(data,callback) {
 
 ##界面介绍
 主界面：  
-![](http://ww1.sinaimg.cn/large/7308e346gw1ebdxblizpoj20oz0gowgh.jpg)
+![主界面](http://ww1.sinaimg.cn/large/7308e346gw1ebdxblizpoj20oz0gowgh.jpg)
 订阅管理界面：
-![](http://ww2.sinaimg.cn/large/7308e346gw1ebdxci4wujj20p00gomyo.jpg)
+![订阅管理界面](http://ww2.sinaimg.cn/large/7308e346gw1ebdxci4wujj20p00gomyo.jpg)
 
 ##API
 #####/api/posts
