@@ -25,6 +25,7 @@ var agenda = new Agenda({db: { address: config.mongo,collection:'jobs'},processE
 
 var db = util.mongo.db();
 
+util.initData(db);
 
 var jobManager = new JobManager(agenda);
 jobManager.restartJobs();
@@ -151,11 +152,23 @@ app.post('/action/add',function(req,res){
 	});
 });
 
-app.get('/test',function(req,res){
-	var d = util.convertMS(10000);
-	console.log(d);
+app.get('/api/test',api.test);
+app.get('/api/posts',api.posts);
+app.get('/api/post/:post_id',api.post);
+app.get('/api/jobs',api.jobs);
+app.post('/api/addjob',api.addjob);
+app.post('/api/job/:job_id/remove',api.removejob);
+app.get('/api/actions',api.actions);
+app.post('/api/addaction',api.addaction);
+app.post('/api/action/:action_id/remove',api.removeaction);
+app.get('/api/start', function(req, res){
+	agenda.start();
+	res.json({status:'agenda started'});
 });
-
+app.get('/api/stop', function(req, res){
+	agenda.stop();
+	res.json({status:'agenda stopped'});
+});
 
 app.listen(3000);
 console.log('Listening on port 3000');
