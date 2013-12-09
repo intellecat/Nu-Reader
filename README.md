@@ -21,8 +21,13 @@ node app.js
 
 Nu-Reader提供了信息处理的统一流程和简单的扩展机制，只要编写少量代码和简单的配置就可以拓展新的功能。
 
-在Nu-Reader里可以定义不同的订阅方式（Action），每种订阅方式由一到多个子动作组成（管道），以最基本的RSS订阅为例：feed.fetch -> feed.removeDuplicate -> feed.update，即RSS采集 -> 去重 -> 更新内容。如图：
-![Actions界面](http://ww2.sinaimg.cn/large/7308e346gw1ebdya5ka7dj20ot0by0ud.jpg)
+####多种订阅方式
+在Nu-Reader里可以定义不同的订阅方式（Action）。如图：
+![Actions界面](http://ww2.sinaimg.cn/large/7308e346gw1ebdya5ka7dj20ot0by0ud.jpg)  
+RSS订阅是最基本的方式，其他预置的订阅方式由读取既有的API、解析HTML、改变RSS原有内容等方法实现。新的订阅方式（Action）是简单轻量的，可以利用既有的基础
+
+####管道结构的处理流程
+每种订阅方式由一到多个子动作组成（管道），以最基本的RSS订阅为例：feed.fetch -> feed.removeDuplicate -> feed.update，即RSS采集 -> 去重 -> 更新内容。（注意上图中的items列）
 
 为什么要分成一个个子动作呢？想象每种订阅方式是一节节组成的水管，某段管子不合适，我们就可以换掉这一段，中间还可以加上净水器、加热器、水表等等。这种方式提高了复用性和灵活性。比如我们只想在V2EX招聘的RSS中订阅有关上海的条目，我可以新建一个Action名为“RSS filter 上海”，在RSS basic的基础上加入一个简单的[自定义子动作custom.shanghai](https://github.com/chuck911/Nu-Reader/blob/master/action/custom.js)
 
