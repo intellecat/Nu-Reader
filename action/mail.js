@@ -10,7 +10,7 @@ exports.send = function (data,callback) {
 	data.items.forEach(function(item){
 		content += item.title + '  '+item.link+'\n';
 	});
-	var mailgun = new Mailgun('key-76-q11u-srygaaw61-s2a5-bygexu8y1');
+	var mailgun = new Mailgun(mailconf.key);
 	mailgun.sendText(
 		mailconf.sender, 
 		mailconf.recipients, 

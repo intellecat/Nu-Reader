@@ -3,7 +3,8 @@
 	"mail": {
 		"sender":"nu-reader-robot@nu-reader.com", 
 		"recipients":"contact@with.cat", 
-		"subject":"Nu_Reader更新内容"
+		"subject":"Nu_Reader更新内容",
+		"key":"key-76-q11u-srygaaw61-s2a5-bygexu8y1"
 	},
 	"template" : {
 		"Dribbble / Following" : ""
