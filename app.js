@@ -4,9 +4,8 @@ var fs = require('fs'),
 	mongo = require('mongoskin'),
 	async = require('async'),
 	JobManager = require('./lib/jobManager')
-	util = require('./lib/util');
-
-process.setMaxListeners(0);
+	util = require('./lib/util'),
+	api = require('./lib/api'),
 	config = require('./config/main.json');
 
 var app = express();
@@ -37,40 +36,33 @@ app.get('/', function(req, res){
 app.get('/jobs',function(req,res){
 	db.collection('jobs').find().toArray(function(err,jobs){
 		if(err) throw err;
-		db.collection('actions').find().toArray(function(err,actions){
+		db.collection('actions').find().sort({_id:1}).toArray(function(err,actions){
 			res.render('jobs/index',{jobs:jobs,actions:actions});
 		});
 	});
 });
 
 app.get('/posts',function(req,res){
+	var page = req.query.page||1;
 	async.series([
 		function(callback){
-			db.collection('posts').find().sort({pubDate:-1}).toArray(function(err,posts){
+			db.collection('posts').find().sort({pubDate:-1}).limit(20).skip((page-1)*20).toArray(function(err,posts){
 				if(err) callback(err,null);
 				else callback(null,posts);		
 			});
 		},
-		getChannels
+		getChannels,
+		function(callback){
+			db.collection('posts').count({},function(err,count){
+				if(err) callback(err,null);
+				else callback(null,count);	
+			});
+		}
 	],function(err,results){
 		if(err) throw err;
-		res.render('posts/index',{posts:results[0],channels:results[1]});
+		res.render('posts/index',{posts:results[0],channels:results[1],channel:null,count:results[2],page:page});
 	});
 });
-
-function getChannels(callback){
-	db.collection('posts').aggregate([
-		{ $group: {
-			_id: "$job",
-			new: {$sum: {$cond : [ "$new", 1, 0 ]}},
-			title: { $addToSet: "$meta.title" },
-			job: { $addToSet: "$job" },
-		}}
-	],function(err,posts){
-		if(err) callback(err,null);
-		else callback(null,posts);		
-	});
-}
 
 app.get('/channel/:channel/posts',function(req,res){
 	// res.status(404).send('Not found');
@@ -91,24 +83,45 @@ app.get('/channel/:channel/posts',function(req,res){
 		}
 	],function(err,results){
 		if(err) throw err;
-		res.render('posts/index',{posts:results[0],channels:results[1],count:results[2],page:page});
+		var channel = results[1].filter(function(item){ return item.job===req.params.channel});
+		channel = channel[0];
+		res.render('posts/index',{posts:results[0],channels:results[1],channel:channel,count:results[2],page:page});
 	});
 });
+
+function getChannels(callback){
+	db.collection('posts').aggregate([
+		{ $group: {
+			_id: "$job",
+			new: {$sum: {$cond : [ "$new", 1, 0 ]}},
+			title: { $addToSet: "$meta.title" },
+			job: { $addToSet: "$job" },
+		}}
+	],function(err,channels){
+		db.collection('jobs').find().toArray(function(err,jobs){
+			channels.map(function(channel){
+				channel.job = channel.job[0];
+				channel.title = channel.title[0];
+				var job = getByName(jobs,channel.job);
+				if(job) channel.title = job.data.title;
+			});
+			if(err) callback(err,null);
+			else callback(null,channels);	
+		});
+	});
+	function getByName(arr,name) {
+		var filtered = arr.filter(function(item){
+			return item.name === name;
+		});
+		return filtered.length>0 ? filtered[0] : null;
+	}
+}
 
 app.get('/post/:post_id',function(req,res){
 	db.collection('posts').findById(req.params.post_id,function(err,post){
 		res.send(post.description||post.content);
+		db.collection('posts').updateById(req.params.post_id,{$set:{new:false}},function(err,post){});
 	});
-});
-
-app.get('/start', function(req, res){
-	agenda.start();
-	res.send('agenda started');
-});
-
-app.get('/stop', function(req, res){
-	agenda.stop();
-	res.send('agenda stopped');
 });
 
 app.post('/job/add',function(req,res){
@@ -124,7 +137,7 @@ app.post('/job/add',function(req,res){
 });
 
 app.get('/actions',function(req,res){
-	db.collection('actions').find().toArray(function(err,actions){
+	db.collection('actions').find().sort({_id:1}).toArray(function(err,actions){
 		res.render('actions/index',{actions:actions});
 	});
 });
