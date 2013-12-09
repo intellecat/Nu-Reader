@@ -30,7 +30,7 @@ function fetchFeed(param,callback) {
 			}
 		})
 		.on('end',function(){
-			callback({meta:meta,items:items,job:param.job});
+			callback({meta:meta,items:items});
 		});
 }
 
@@ -51,16 +51,7 @@ function removeDuplicate(data,callback) {
 }
 
 function updateFeed(data,callback) {
-	var meta = data.meta;
-	var size = data.items.length;
-	data.items.forEach(function(item){
-		item.meta = {title:meta.title,link:meta.link};
-		item.job = data.job;
-		item.new = true;
-		posts_collection.insert(item,function(err, result){
-			if(--size===0) callback(data);
-		});
-	});
+	util.savePosts(data,callback);
 }
 
 exports.fetch = fetchFeed;

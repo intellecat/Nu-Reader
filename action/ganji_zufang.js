@@ -9,11 +9,11 @@ function fetch(param,callback) {
 		var $ = cheerio.load(body);
 		var items = [];
 		$('.list-info-title').each(function(){
-			var link = 'http://sh.ganji.com'+$(this).attr('href');
+			var link = 'http://www.ganji.com'+$(this).attr('href');
 			items.push({guid:link,link:link});
 		});
 		items = items.slice(0,20);
-		callback({items:items,job:param.job});
+		callback({items:items});
 	});
 }
 
