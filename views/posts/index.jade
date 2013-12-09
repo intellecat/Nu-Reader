@@ -9,21 +9,15 @@ block content
 				each channel,i in channels
 					li.list-group-item
 						a(href='/channel/'+channel.job+'/posts')= channel.title
-						span.badge= channel.new
+						if channel.new > 0
+							span.badge= channel.new
 
 		.posts
 			.post-list.scrollable
 				header.channel-title
-					h3= posts[0].meta.title
+					h3= channel ? channel.title : 'All'
 
-				table.table
-					tbody
-						each post,i in posts
-							tr
-								td.td-title
-									a.link-title(href='/post/'+post._id)= post.title
-									a.btn.btn-external(href=post.link,target="_blank")
-										span.glyphicon.glyphicon-new-window
+				include post
 
 				ul.pager
 					if page > 1
@@ -33,23 +27,4 @@ block content
 						li.next
 							a(href='?page='+(page*1+1)) Older &rarr;
 
-	script.
-		$(function(){
-			$('.td-title .link-title').on('click',function(event){
-				event.preventDefault();
-				var $link = $(this);
-				var $td = $link.parent();
-				if($td.hasClass('active')){
-					$('.tr-post-content').remove();
-					$td.removeClass('active');
-					return;
-				}else{
-					$td.addClass('active');
-				}
-				$('.tr-post-content').prev('tr').find('.td-title').removeClass('active');
-				$('.tr-post-content').remove();
-				$.get($link.attr('href'),function(data){
-					$link.parents('tr').after('<tr class="tr-post-content"><td><div class="post-content">'+data+'</div></td></tr>');
-				});
-			});
-		});
+	

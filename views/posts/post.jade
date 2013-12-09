@@ -1,0 +1,30 @@
+table.table
+	tbody
+		each post,i in posts
+			tr(class=(post.new?'unread':''))
+				td.td-title
+					a.link-title(href='/post/'+post._id)= post.title
+					a.btn.btn-external(href=post.link,target="_blank")
+						span.glyphicon.glyphicon-new-window
+
+script.
+		$(function(){
+			$('.td-title .link-title').on('click',function(event){
+				event.preventDefault();
+				var $link = $(this);
+				var $td = $link.parent();
+				$td.parent('tr').removeClass('unread');
+				if($td.hasClass('active')){
+					$('.tr-post-content').remove();
+					$td.removeClass('active');
+					return;
+				}else{
+					$td.addClass('active');
+				}
+				$('.tr-post-content').prev('tr').find('.td-title').removeClass('active');
+				$('.tr-post-content').remove();
+				$.get($link.attr('href'),function(data){
+					$link.parents('tr').after('<tr class="tr-post-content"><td><div class="post-content">'+data+'</div></td></tr>');
+				});
+			});
+		});

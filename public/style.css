@@ -151,6 +151,14 @@ html,body {
 .td-title a {
 	color: #666;
 }
+.unread .link-title {
+	color: #428bca;
+}
+.table>tbody>tr>.td-date {
+	color: #aaa;
+	vertical-align: middle;
+	font-size: 13px;
+}
 .tr-post-content {
 	background-color: #fff;
 }
