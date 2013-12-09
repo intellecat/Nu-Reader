@@ -10,6 +10,7 @@
     "mongoskin":"*",
     "async":"*",
     "jade":"*",
-    "cheerio":"*"
+    "cheerio":"*",
+    "mailgun":"*"
   }
 }
