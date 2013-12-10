@@ -51,6 +51,9 @@ exports.shanghai = function(data,callback) {
 ![订阅管理界面](http://ww2.sinaimg.cn/large/7308e346gw1ebdxci4wujj20p00gomyo.jpg)
 
 ##API
+#####/rss/:job_id
+再生成当前频道的RSS
+
 #####/api/posts
 获取所有文章, 附加参数: size,offset,job
 
