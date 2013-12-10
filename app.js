@@ -165,6 +165,7 @@ app.get('/api/stop', function(req, res){
 	agenda.stop();
 	res.json({status:'agenda stopped'});
 });
+app.get('/rss/:job_id',api.rss);
 
 app.listen(3000);
 console.log('Listening on port 3000');

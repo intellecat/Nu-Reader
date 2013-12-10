@@ -11,6 +11,7 @@
     "async":"*",
     "jade":"*",
     "cheerio":"*",
-    "mailgun":"*"
+    "mailgun":"*",
+    "rss":"*"
   }
 }
